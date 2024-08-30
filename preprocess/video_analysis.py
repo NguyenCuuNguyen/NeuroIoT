@@ -1,9 +1,10 @@
 import cv2
 import os
+import numpy as np
 
 vid_path = '/Users/irisnguyen/Documents/Utah PhD/Neurosymbolic Research/Code/IO/gopro/GH010069.MP4'
 num_frames = 100
-imgs_path = '/Users/irisnguyen/Documents/Utah PhD/Neurosymbolic Research/Code/IO/imagesOutput/NaieveSamples'
+imgs_path = '/Users/irisnguyen/Documents/Utah PhD/Neurosymbolic Research/Code/IO/Output/naive/images'
 
 def sample_frames(vid, num_frames):
     total_frames = int(vid.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -34,6 +35,10 @@ def save_imgs(folder_path, image_array):
         file_path = os.path.join(folder_path, file_name)
         cv2.imwrite(file_path, img)
 
+def save_npz(image_array):
+    npz_file_name = "/Users/irisnguyen/Documents/Utah PhD/Neurosymbolic Research/Code/IO/Output/naive/numpy/naiveArrays.npz"
+    np.savez(npz_file_name, image_array)
+
 if __name__ == "__main__":
 # Check if the video opened successfully
     cap = cv2.VideoCapture(vid_path)
@@ -42,8 +47,9 @@ if __name__ == "__main__":
         print("Error opening video file")
 
     sampled_frames = sample_frames(cap, num_frames)
-    
+    # print(type(sampled_frames))
     save_imgs(imgs_path, sampled_frames)
+    save_npz(sampled_frames)
     # Release the video capture object
     cap.release()
 
